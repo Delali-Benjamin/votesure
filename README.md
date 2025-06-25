@@ -1,7 +1,7 @@
 
-# 🎓 VoteSure – Secure University Voting System
+# 🎓 VoteSure – Secure  Voting System
 
-VoteSure is a tamper-proof, real-time digital voting system built to ensure transparency, fairness, and integrity in university elections.
+VoteSure is a tamper-proof, real-time digital voting system built to ensure transparency, fairness, and integrity in  elections.
 
 ---
 
