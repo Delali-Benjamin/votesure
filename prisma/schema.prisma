@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  role        Role     @default(VOTER)
+  hasVoted    Boolean  @default(false)
+  otp         String?
+  otpExpiry   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  votes       Vote[]
+}
+
+model Election {
+  id         String      @id @default(uuid())
+  name       String
+  isActive   Boolean     @default(false)
+  startDate  DateTime
+  endDate    DateTime
+  candidates Candidate[]
+  votes      Vote[]
+}
+
+model Candidate {
+  id         String    @id @default(uuid())
+  name       String
+  position   String
+  photoURL   String
+  election   Election  @relation(fields: [electionId], references: [id])
+  electionId String
+  votes      Vote[]
+}
+
+model Vote {
+  id          String     @id @default(uuid())
+  voter       User       @relation(fields: [voterId], references: [id])
+  voterId     String
+  candidate   Candidate  @relation(fields: [candidateId], references: [id])
+  candidateId String
+  election    Election   @relation(fields: [electionId], references: [id])
+  electionId  String
+  createdAt   DateTime   @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  actorId   String
+  action    String
+  detail    String
+  timestamp DateTime @default(now())
+}
+
+enum Role {
+  VOTER
+  ADMIN
+  SUPERADMIN
+}
+
